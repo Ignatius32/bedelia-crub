@@ -1,0 +1,101 @@
+{% extends "layouts/base.html" %}
+
+{% block title %}Editar Espacio{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+    <h1 class="h2">Editar Espacio</h1>
+</div>
+
+<div class="row">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-body">
+                <form method="POST" action="{{ url_for('admin.espacios_edit', id=espacio.id) }}">
+                    {{ form.hidden_tag() }}
+                    <div class="mb-3">
+                        {{ form.nombre.label(class="form-label") }}
+                        {{ form.nombre(class="form-control" + (" is-invalid" if form.nombre.errors else "")) }}
+                        {% for error in form.nombre.errors %}
+                            <div class="invalid-feedback">{{ error }}</div>
+                        {% endfor %}
+                    </div>
+                    <div class="mb-3">
+                        {{ form.ubicacion.label(class="form-label") }}
+                        {{ form.ubicacion(class="form-control" + (" is-invalid" if form.ubicacion.errors else "")) }}
+                        {% for error in form.ubicacion.errors %}
+                            <div class="invalid-feedback">{{ error }}</div>
+                        {% endfor %}
+                    </div>
+                    <div class="mb-3">
+                        {{ form.aforo.label(class="form-label") }}
+                        {{ form.aforo(class="form-control" + (" is-invalid" if form.aforo.errors else ""), type="number", min="1") }}
+                        {% for error in form.aforo.errors %}
+                            <div class="invalid-feedback">{{ error }}</div>
+                        {% endfor %}
+                    </div>
+                    <div class="mb-3">
+                        {{ form.tipo_espacio.label(class="form-label") }}
+                        {{ form.tipo_espacio(class="form-select" + (" is-invalid" if form.tipo_espacio.errors else "")) }}
+                        {% for error in form.tipo_espacio.errors %}
+                            <div class="invalid-feedback">{{ error }}</div>
+                        {% endfor %}
+                    </div>
+                    <div class="mb-3">
+                        {{ form.equipo_id.label(class="form-label") }}
+                        {{ form.equipo_id(class="form-select" + (" is-invalid" if form.equipo_id.errors else "")) }}
+                        {% for error in form.equipo_id.errors %}
+                            <div class="invalid-feedback">{{ error }}</div>
+                        {% endfor %}
+                    </div>
+                    <div class="mb-3">
+                        {{ form.estado.label(class="form-label") }}
+                        {{ form.estado(class="form-select" + (" is-invalid" if form.estado.errors else "")) }}
+                        {% for error in form.estado.errors %}
+                            <div class="invalid-feedback">{{ error }}</div>
+                        {% endfor %}
+                    </div>
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                        <a href="{{ url_for('admin.espacios_list') }}" class="btn btn-secondary me-md-2">Cancelar</a>
+                        {{ form.submit(class="btn btn-primary") }}
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-6">
+        <div class="card mb-4">
+            <div class="card-header">
+                <h5>Información del Espacio</h5>
+            </div>
+            <div class="card-body">
+                <p><strong>ID:</strong> {{ espacio.id }}</p>
+                <p><strong>Nombre actual:</strong> {{ espacio.nombre }}</p>
+                <p><strong>Ubicación actual:</strong> {{ espacio.ubicacion }}</p>
+                <p><strong>Aforo actual:</strong> {{ espacio.aforo }} personas</p>
+                <p><strong>Tipo actual:</strong> {{ espacio.tipo_espacio|capitalize }}</p>
+                <p><strong>Equipo asignado:</strong> {{ espacio.equipo.nombre if espacio.equipo else 'Sin equipo asignado' }}</p>
+                <p><strong>Estado actual:</strong> {{ espacio.estado|capitalize }}</p>
+            </div>
+        </div>
+        
+        {% if espacio.actividades.count() > 0 %}
+        <div class="card">
+            <div class="card-header">
+                <h5>Actividades Asignadas</h5>
+            </div>
+            <div class="card-body">
+                <ul class="list-group">
+                    {% for actividad in espacio.actividades %}
+                    <li class="list-group-item">
+                        {{ actividad.asignatura }} - {{ actividad.dias }} ({{ actividad.horario_desde.strftime('%H:%M') }} - {{ actividad.horario_hasta.strftime('%H:%M') }})
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

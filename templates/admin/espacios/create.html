@@ -1,0 +1,86 @@
+{% extends "layouts/base.html" %}
+
+{% block title %}Crear Nuevo Espacio{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+    <h1 class="h2">Crear Nuevo Espacio</h1>
+</div>
+
+<div class="row">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-body">
+                <form method="POST" action="{{ url_for('admin.espacios_create') }}">
+                    {{ form.hidden_tag() }}
+                    <div class="mb-3">
+                        {{ form.nombre.label(class="form-label") }}
+                        {{ form.nombre(class="form-control" + (" is-invalid" if form.nombre.errors else "")) }}
+                        {% for error in form.nombre.errors %}
+                            <div class="invalid-feedback">{{ error }}</div>
+                        {% endfor %}
+                    </div>
+                    <div class="mb-3">
+                        {{ form.ubicacion.label(class="form-label") }}
+                        {{ form.ubicacion(class="form-control" + (" is-invalid" if form.ubicacion.errors else "")) }}
+                        {% for error in form.ubicacion.errors %}
+                            <div class="invalid-feedback">{{ error }}</div>
+                        {% endfor %}
+                    </div>
+                    <div class="mb-3">
+                        {{ form.aforo.label(class="form-label") }}
+                        {{ form.aforo(class="form-control" + (" is-invalid" if form.aforo.errors else ""), type="number", min="1") }}
+                        {% for error in form.aforo.errors %}
+                            <div class="invalid-feedback">{{ error }}</div>
+                        {% endfor %}
+                    </div>
+                    <div class="mb-3">
+                        {{ form.tipo_espacio.label(class="form-label") }}
+                        {{ form.tipo_espacio(class="form-select" + (" is-invalid" if form.tipo_espacio.errors else "")) }}
+                        {% for error in form.tipo_espacio.errors %}
+                            <div class="invalid-feedback">{{ error }}</div>
+                        {% endfor %}
+                    </div>
+                    <div class="mb-3">
+                        {{ form.equipo_id.label(class="form-label") }}
+                        {{ form.equipo_id(class="form-select" + (" is-invalid" if form.equipo_id.errors else "")) }}
+                        {% for error in form.equipo_id.errors %}
+                            <div class="invalid-feedback">{{ error }}</div>
+                        {% endfor %}
+                    </div>
+                    <div class="mb-3">
+                        {{ form.estado.label(class="form-label") }}
+                        {{ form.estado(class="form-select" + (" is-invalid" if form.estado.errors else "")) }}
+                        {% for error in form.estado.errors %}
+                            <div class="invalid-feedback">{{ error }}</div>
+                        {% endfor %}
+                    </div>
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                        <a href="{{ url_for('admin.espacios_list') }}" class="btn btn-secondary me-md-2">Cancelar</a>
+                        {{ form.submit(class="btn btn-primary") }}
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">
+                <h5>Instrucciones</h5>
+            </div>
+            <div class="card-body">
+                <p>Complete el formulario para registrar un nuevo espacio en el sistema.</p>
+                <ul>
+                    <li><strong>Nombre:</strong> Nombre descriptivo del espacio (por ejemplo: "Aula 101", "Laboratorio de Química").</li>
+                    <li><strong>Ubicación:</strong> Dirección o ubicación específica dentro del campus (por ejemplo: "Edificio Central, 1er Piso").</li>
+                    <li><strong>Aforo:</strong> Capacidad máxima de personas para este espacio.</li>
+                    <li><strong>Tipo de Espacio:</strong> Categoría del espacio (aula, laboratorio, sala, etc.).</li>
+                    <li><strong>Equipo:</strong> Equipo asignado a este espacio (opcional).</li>
+                    <li><strong>Estado:</strong> Condición actual del espacio (disponible, en mantenimiento, inactivo).</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

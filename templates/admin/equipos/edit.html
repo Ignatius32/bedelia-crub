@@ -1,0 +1,74 @@
+{% extends "layouts/base.html" %}
+
+{% block title %}Editar Equipo{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+    <h1 class="h2">Editar Equipo</h1>
+</div>
+
+<div class="row">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-body">
+                <form method="POST" action="{{ url_for('admin.equipos_edit', id=equipo.id) }}">
+                    {{ form.hidden_tag() }}
+                    <div class="mb-3">
+                        {{ form.nombre.label(class="form-label") }}
+                        {{ form.nombre(class="form-control" + (" is-invalid" if form.nombre.errors else "")) }}
+                        {% for error in form.nombre.errors %}
+                            <div class="invalid-feedback">{{ error }}</div>
+                        {% endfor %}
+                    </div>
+                    <div class="mb-3 form-check">
+                        {{ form.fijo(class="form-check-input") }}
+                        {{ form.fijo.label(class="form-check-label") }}
+                    </div>
+                    <div class="mb-3">
+                        {{ form.estado.label(class="form-label") }}
+                        {{ form.estado(class="form-select" + (" is-invalid" if form.estado.errors else "")) }}
+                        {% for error in form.estado.errors %}
+                            <div class="invalid-feedback">{{ error }}</div>
+                        {% endfor %}
+                    </div>
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                        <a href="{{ url_for('admin.equipos_list') }}" class="btn btn-secondary me-md-2">Cancelar</a>
+                        {{ form.submit(class="btn btn-primary") }}
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-6">
+        <div class="card mb-4">
+            <div class="card-header">
+                <h5>Información del Equipo</h5>
+            </div>
+            <div class="card-body">
+                <p><strong>ID:</strong> {{ equipo.id }}</p>
+                <p><strong>Nombre actual:</strong> {{ equipo.nombre }}</p>
+                <p><strong>Tipo:</strong> {{ "Fijo" if equipo.fijo else "Móvil" }}</p>
+                <p><strong>Estado actual:</strong> {{ equipo.estado|capitalize }}</p>
+            </div>
+        </div>
+        
+        {% if equipo.espacios.count() > 0 %}
+        <div class="card">
+            <div class="card-header">
+                <h5>Espacios Asignados</h5>
+            </div>
+            <div class="card-body">
+                <ul class="list-group">
+                    {% for espacio in equipo.espacios %}
+                    <li class="list-group-item">
+                        {{ espacio.nombre }} - {{ espacio.ubicacion }}
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

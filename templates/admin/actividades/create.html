@@ -1,0 +1,211 @@
+{% extends "layouts/base.html" %}
+
+{% block title %}Crear Nueva Actividad{% endblock %}
+
+{% block styles %}
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+<style>
+    .select2-container--default .select2-selection--single {
+        height: 38px;
+        padding: 5px;
+    }
+    
+    .select2-result-materia {
+        padding: 8px;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+    <h1 class="h2">Crear Nueva Actividad</h1>
+</div>
+
+<div class="row">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-body">
+                <form method="POST" action="{{ url_for('admin.actividades_create') }}" id="actividad-form">                    {{ form.hidden_tag() }}
+                    
+                    <div class="mb-3">
+                        {{ form.asignatura_id.label(class="form-label") }}
+                        {{ form.asignatura_id(class="form-control asignatura-select" + (" is-invalid" if form.asignatura_id.errors else "")) }}
+                        {{ form.asignatura_info() }}
+                        {% for error in form.asignatura_id.errors %}
+                            <div class="invalid-feedback">{{ error }}</div>
+                        {% endfor %}
+                        <small class="form-text text-muted">Busque por nombre de la materia o carrera.</small>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            {{ form.tipo_actividad_id.label(class="form-label") }}
+                            {{ form.tipo_actividad_id(class="form-select" + (" is-invalid" if form.tipo_actividad_id.errors else "")) }}
+                            {% for error in form.tipo_actividad_id.errors %}
+                                <div class="invalid-feedback">{{ error }}</div>
+                            {% endfor %}
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            {{ form.espacio_id.label(class="form-label") }}
+                            {{ form.espacio_id(class="form-select" + (" is-invalid" if form.espacio_id.errors else "")) }}
+                            {% for error in form.espacio_id.errors %}
+                                <div class="invalid-feedback">{{ error }}</div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            {{ form.fecha_desde.label(class="form-label") }}
+                            {{ form.fecha_desde(class="form-control datepicker" + (" is-invalid" if form.fecha_desde.errors else ""), id="fecha_desde") }}
+                            {% for error in form.fecha_desde.errors %}
+                                <div class="invalid-feedback">{{ error }}</div>
+                            {% endfor %}
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            {{ form.fecha_hasta.label(class="form-label") }}
+                            {{ form.fecha_hasta(class="form-control datepicker" + (" is-invalid" if form.fecha_hasta.errors else ""), id="fecha_hasta") }}
+                            {% for error in form.fecha_hasta.errors %}
+                                <div class="invalid-feedback">{{ error }}</div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            {{ form.horario_desde.label(class="form-label") }}
+                            {{ form.horario_desde(class="form-control timepicker" + (" is-invalid" if form.horario_desde.errors else ""), id="horario_desde") }}
+                            {% for error in form.horario_desde.errors %}
+                                <div class="invalid-feedback">{{ error }}</div>
+                            {% endfor %}
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            {{ form.horario_hasta.label(class="form-label") }}
+                            {{ form.horario_hasta(class="form-control timepicker" + (" is-invalid" if form.horario_hasta.errors else ""), id="horario_hasta") }}
+                            {% for error in form.horario_hasta.errors %}
+                                <div class="invalid-feedback">{{ error }}</div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                      <div class="mb-3">
+                        {{ form.dias.label(class="form-label") }}
+                        <div class="day-checkbox-container">                            {% for choice in form.dias.choices %}
+                            <div class="form-check day-checkbox">
+                                <input class="form-check-input" type="checkbox" name="dias" value="{{ choice[0] }}" id="dia-{{ choice[0] }}" 
+                                    {% if form.dias.data is not none and choice[0] in form.dias.data %}checked{% endif %}>
+                                <label class="form-check-label" for="dia-{{ choice[0] }}">
+                                    {{ choice[1] }}
+                                </label>
+                            </div>
+                            {% endfor %}
+                        </div>
+                        {% for error in form.dias.errors %}
+                            <div class="invalid-feedback d-block">{{ error }}</div>
+                        {% endfor %}
+                    </div>
+                    
+                    <div class="mb-3">
+                        {{ form.frecuencia.label(class="form-label") }}
+                        {{ form.frecuencia(class="form-select" + (" is-invalid" if form.frecuencia.errors else "")) }}
+                        {% for error in form.frecuencia.errors %}
+                            <div class="invalid-feedback">{{ error }}</div>
+                        {% endfor %}
+                    </div>
+                    
+                    <div class="mb-3">
+                        {{ form.equipamiento_extra.label(class="form-label") }}
+                        {{ form.equipamiento_extra(class="form-control" + (" is-invalid" if form.equipamiento_extra.errors else ""), rows=3) }}
+                        {% for error in form.equipamiento_extra.errors %}
+                            <div class="invalid-feedback">{{ error }}</div>
+                        {% endfor %}
+                    </div>
+                    
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                        <a href="{{ url_for('admin.actividades_list') }}" class="btn btn-secondary me-md-2">Cancelar</a>
+                        {{ form.submit(class="btn btn-primary") }}
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-header">
+                <h5>Instrucciones</h5>
+            </div>
+            <div class="card-body">
+                <p>Complete el formulario para programar una nueva actividad.</p>
+                <ul>
+                    <li><strong>Asignatura:</strong> Nombre del curso o evento.</li>
+                    <li><strong>Tipo de Actividad:</strong> Categoría de la actividad.</li>
+                    <li><strong>Espacio:</strong> Ubicación donde se realizará.</li>
+                    <li><strong>Fechas:</strong> Período durante el cual se realizará la actividad.</li>
+                    <li><strong>Horarios:</strong> Horas de inicio y fin de cada sesión.</li>
+                    <li><strong>Días:</strong> Días de la semana en que se realizará.</li>
+                    <li><strong>Frecuencia:</strong> Periodicidad de las sesiones.</li>
+                    <li><strong>Equipamiento Extra:</strong> Recursos adicionales necesarios.</li>
+                </ul>
+                <div class="alert alert-info">
+                    <i class="fas fa-info-circle"></i> Todas las actividades se verifican automáticamente para evitar conflictos de horarios o espacios.
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+<script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/es.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+<script src="{{ url_for('static', filename='js/materias.js') }}"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Inicializar datepickers
+        flatpickr(".datepicker", {
+            locale: "es",
+            dateFormat: "Y-m-d",
+            allowInput: true
+        });
+        
+        // Inicializar timepickers
+        flatpickr(".timepicker", {
+            enableTime: true,
+            noCalendar: true,
+            dateFormat: "H:i",
+            time_24hr: true,
+            allowInput: true
+        });
+          // Validación del formulario
+        const form = document.getElementById('actividad-form');
+        form.addEventListener('submit', function(e) {
+            const fechaDesde = new Date(document.getElementById('fecha_desde').value);
+            const fechaHasta = new Date(document.getElementById('fecha_hasta').value);
+            
+            if (fechaHasta < fechaDesde) {
+                e.preventDefault();
+                alert('La fecha de finalización debe ser posterior a la fecha de inicio.');
+                return false;
+            }
+            
+            const horaDesde = document.getElementById('horario_desde').value;
+            const horaHasta = document.getElementById('horario_hasta').value;
+            
+            if (horaHasta <= horaDesde) {
+                e.preventDefault();
+                alert('El horario de finalización debe ser posterior al horario de inicio.');
+                return false;
+            }
+              // Validar que al menos un día esté seleccionado
+            const diasCheckboxes = document.querySelectorAll('input[name="dias"]:checked');
+            if (diasCheckboxes.length === 0) {
+                e.preventDefault();
+                alert('Debe seleccionar al menos un día de la semana.');
+                return false;
+            }
+        });
+    });
+</script>
+{% endblock %}

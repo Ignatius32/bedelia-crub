@@ -1,0 +1,54 @@
+{% extends "layouts/base.html" %}
+
+{% block title %}Crear Nuevo Tipo de Actividad{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+    <h1 class="h2">Crear Nuevo Tipo de Actividad</h1>
+</div>
+
+<div class="row">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-body">
+                <form method="POST" action="{{ url_for('admin.tipo_actividades_create') }}">
+                    {{ form.hidden_tag() }}
+                    <div class="mb-3">
+                        {{ form.nombre.label(class="form-label") }}
+                        {{ form.nombre(class="form-control" + (" is-invalid" if form.nombre.errors else "")) }}
+                        {% for error in form.nombre.errors %}
+                            <div class="invalid-feedback">{{ error }}</div>
+                        {% endfor %}
+                    </div>
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                        <a href="{{ url_for('admin.tipo_actividades_list') }}" class="btn btn-secondary me-md-2">Cancelar</a>
+                        {{ form.submit(class="btn btn-primary") }}
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">
+                <h5>Instrucciones</h5>
+            </div>
+            <div class="card-body">
+                <p>Complete el formulario para registrar un nuevo tipo de actividad en el sistema.</p>
+                <p>Los tipos de actividades definen categorías para las actividades académicas que se realizan en los espacios, como:</p>
+                <ul>
+                    <li>Clase Teórica</li>
+                    <li>Clase Práctica</li>
+                    <li>Laboratorio</li>
+                    <li>Seminario</li>
+                    <li>Examen</li>
+                    <li>Conferencia</li>
+                    <li>Taller</li>
+                </ul>
+                <p>Cada actividad debe estar asociada a un tipo, lo que permite organizar y filtrar mejor el calendario de actividades.</p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

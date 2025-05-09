@@ -1,0 +1,68 @@
+{% extends "layouts/base.html" %}
+
+{% block title %}Editar Tipo de Actividad{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+    <h1 class="h2">Editar Tipo de Actividad</h1>
+</div>
+
+<div class="row">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-body">
+                <form method="POST" action="{{ url_for('admin.tipo_actividades_edit', id=tipo.id) }}">
+                    {{ form.hidden_tag() }}
+                    <div class="mb-3">
+                        {{ form.nombre.label(class="form-label") }}
+                        {{ form.nombre(class="form-control" + (" is-invalid" if form.nombre.errors else "")) }}
+                        {% for error in form.nombre.errors %}
+                            <div class="invalid-feedback">{{ error }}</div>
+                        {% endfor %}
+                    </div>
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                        <a href="{{ url_for('admin.tipo_actividades_list') }}" class="btn btn-secondary me-md-2">Cancelar</a>
+                        {{ form.submit(class="btn btn-primary") }}
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-6">
+        <div class="card mb-4">
+            <div class="card-header">
+                <h5>Información del Tipo de Actividad</h5>
+            </div>
+            <div class="card-body">
+                <p><strong>ID:</strong> {{ tipo.id }}</p>
+                <p><strong>Nombre actual:</strong> {{ tipo.nombre }}</p>
+                <p><strong>Actividades relacionadas:</strong> {{ tipo.actividades.count() }}</p>
+            </div>
+        </div>
+        
+        {% if tipo.actividades.count() > 0 %}
+        <div class="card">
+            <div class="card-header">
+                <h5>Actividades Relacionadas</h5>
+            </div>
+            <div class="card-body">
+                <p class="text-muted">Este tipo de actividad se utiliza en las siguientes actividades:</p>
+                <ul class="list-group">
+                    {% for actividad in tipo.actividades.limit(10) %}
+                    <li class="list-group-item">
+                        {{ actividad.asignatura }} ({{ actividad.espacio.nombre }})
+                    </li>
+                    {% endfor %}
+                    {% if tipo.actividades.count() > 10 %}
+                    <li class="list-group-item text-muted">
+                        Y {{ tipo.actividades.count() - 10 }} más...
+                    </li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

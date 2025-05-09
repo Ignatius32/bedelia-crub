@@ -1,0 +1,59 @@
+{% extends "layouts/base.html" %}
+
+{% block title %}Crear Nuevo Equipo{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+    <h1 class="h2">Crear Nuevo Equipo</h1>
+</div>
+
+<div class="row">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-body">
+                <form method="POST" action="{{ url_for('admin.equipos_create') }}">
+                    {{ form.hidden_tag() }}
+                    <div class="mb-3">
+                        {{ form.nombre.label(class="form-label") }}
+                        {{ form.nombre(class="form-control" + (" is-invalid" if form.nombre.errors else "")) }}
+                        {% for error in form.nombre.errors %}
+                            <div class="invalid-feedback">{{ error }}</div>
+                        {% endfor %}
+                    </div>
+                    <div class="mb-3 form-check">
+                        {{ form.fijo(class="form-check-input") }}
+                        {{ form.fijo.label(class="form-check-label") }}
+                    </div>
+                    <div class="mb-3">
+                        {{ form.estado.label(class="form-label") }}
+                        {{ form.estado(class="form-select" + (" is-invalid" if form.estado.errors else "")) }}
+                        {% for error in form.estado.errors %}
+                            <div class="invalid-feedback">{{ error }}</div>
+                        {% endfor %}
+                    </div>
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                        <a href="{{ url_for('admin.equipos_list') }}" class="btn btn-secondary me-md-2">Cancelar</a>
+                        {{ form.submit(class="btn btn-primary") }}
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">
+                <h5>Instrucciones</h5>
+            </div>
+            <div class="card-body">
+                <p>Complete el formulario para registrar un nuevo equipo en el sistema.</p>
+                <ul>
+                    <li><strong>Nombre:</strong> Nombre descriptivo del equipo (por ejemplo: "Proyector Multimedia", "Equipo de Sonido").</li>
+                    <li><strong>Fijo:</strong> Marcar si el equipo permanece fijo en un espacio o puede moverse entre espacios.</li>
+                    <li><strong>Estado:</strong> Indica si el equipo está activo (disponible) o inactivo (no disponible).</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,89 @@
+{% extends "layouts/base.html" %}
+
+{% block title %}Listado de Espacios{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+    <h1 class="h2">Espacios</h1>
+    <div class="btn-toolbar mb-2 mb-md-0">
+        <a href="{{ url_for('admin.espacios_create') }}" class="btn btn-sm btn-outline-primary">
+            <i class="fas fa-plus"></i> Nuevo Espacio
+        </a>
+    </div>
+</div>
+
+<div class="mb-3">
+    <input type="text" class="form-control table-filter" placeholder="Filtrar espacios...">
+</div>
+
+<div class="table-responsive">
+    <table class="table table-striped table-hover table-filterable">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Nombre</th>
+                <th>Ubicación</th>
+                <th>Aforo</th>
+                <th>Tipo</th>
+                <th>Equipo</th>
+                <th>Estado</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% if espacios %}
+                {% for espacio in espacios %}
+                    <tr>
+                        <td>{{ espacio.id }}</td>
+                        <td>{{ espacio.nombre }}</td>
+                        <td>{{ espacio.ubicacion }}</td>
+                        <td>{{ espacio.aforo }}</td>
+                        <td>{{ espacio.tipo_espacio|capitalize }}</td>
+                        <td>{{ espacio.equipo.nombre if espacio.equipo else 'Sin equipo' }}</td>
+                        <td>
+                            <span class="badge bg-{{ 'success' if espacio.estado == 'disponible' else 'warning' if espacio.estado == 'mantenimiento' else 'danger' }}">
+                                {{ espacio.estado|capitalize }}
+                            </span>
+                        </td>
+                        <td>
+                            <a href="{{ url_for('admin.espacios_edit', id=espacio.id) }}" class="btn btn-sm btn-outline-primary">
+                                <i class="fas fa-edit"></i>
+                            </a>
+                            <form action="{{ url_for('admin.espacios_delete', id=espacio.id) }}" method="POST" class="d-inline">
+                                <button type="submit" class="btn btn-sm btn-outline-danger btn-delete">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                {% endfor %}
+            {% else %}
+                <tr>
+                    <td colspan="8" class="text-center">No hay espacios registrados.</td>
+                </tr>
+            {% endif %}
+        </tbody>
+    </table>
+</div>
+
+<div class="mt-3">
+    <a href="{{ url_for('admin.index') }}" class="btn btn-secondary">
+        <i class="fas fa-arrow-left"></i> Volver al Panel
+    </a>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Confirmación de eliminación
+        document.querySelectorAll('.btn-delete').forEach(function(button) {
+            button.addEventListener('click', function(e) {
+                if (!confirm('¿Está seguro que desea eliminar este espacio? Esta acción no se puede deshacer.')) {
+                    e.preventDefault();
+                }
+            });
+        });
+    });
+</script>
+{% endblock %}

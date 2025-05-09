@@ -1,0 +1,153 @@
+/* Estilos personalizados para el sistema de administración universitaria */
+
+/* Estilos generales */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+main {
+    flex: 1;
+}
+
+/* Navbar */
+.navbar-brand {
+    font-weight: bold;
+}
+
+/* Tarjetas */
+.card {
+    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+    transition: box-shadow 0.3s ease;
+}
+
+.card:hover {
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+}
+
+.card-title {
+    font-weight: 600;
+}
+
+/* Botones */
+.btn {
+    border-radius: 0.25rem;
+}
+
+/* Iconos */
+.fas, .far, .fab {
+    margin-right: 0.5rem;
+}
+
+/* Tablas */
+.table th {
+    background-color: #f8f9fa;
+    font-weight: 600;
+}
+
+/* Formularios */
+.form-control:focus {
+    border-color: #80bdff;
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+}
+
+/* Estilo para selección múltiple de días */
+select[multiple] {
+    height: auto;
+    min-height: 150px;
+}
+
+select[multiple] option {
+    padding: 8px 12px;
+    margin-bottom: 2px;
+    border-radius: 3px;
+}
+
+select[multiple] option:hover {
+    background-color: #f8f9fa;
+}
+
+select[multiple] option:checked {
+    background-color: #007bff;
+    color: white;
+}
+
+/* Arreglo para los checkboxes de días */
+.day-checkbox-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-bottom: 15px;
+    padding: 10px;
+    background-color: #f8f9fa;
+    border-radius: 5px;
+}
+
+.day-checkbox {
+    flex: 0 0 auto;
+    min-width: 120px;
+    margin-bottom: 8px;
+    padding: 5px 10px;
+    border-radius: 4px;
+    background-color: white;
+    border: 1px solid #dee2e6;
+    transition: background-color 0.2s, border-color 0.2s;
+}
+
+.day-checkbox:hover {
+    background-color: #e9ecef;
+}
+
+.day-checkbox .form-check-input:checked + .form-check-label {
+    font-weight: bold;
+    color: #007bff;
+}
+
+/* Jumbotron personalizado */
+.jumbotron {
+    background-color: #f8f9fa;
+    border-radius: 0.3rem;
+}
+
+/* Calendario */
+.calendar-day {
+    min-height: 120px;
+    background-color: #fff;
+    border: 1px solid #dee2e6;
+}
+
+.calendar-day.today {
+    background-color: #f8f9fa;
+    border: 2px solid #007bff;
+}
+
+.calendar-event {
+    margin-bottom: 0.5rem;
+    padding: 0.25rem 0.5rem;
+    border-radius: 0.25rem;
+    font-size: 0.8rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    color: #fff;
+}
+
+.event-type-1 { background-color: #007bff; }
+.event-type-2 { background-color: #28a745; }
+.event-type-3 { background-color: #dc3545; }
+.event-type-4 { background-color: #ffc107; color: #343a40; }
+.event-type-5 { background-color: #6f42c1; }
+
+/* Estilos responsivos */
+@media (max-width: 768px) {
+    .calendar-day {
+        min-height: 60px;
+    }
+}
+
+/* Footer */
+footer {
+    margin-top: auto;
+}
