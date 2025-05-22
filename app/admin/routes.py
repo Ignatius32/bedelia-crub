@@ -201,12 +201,11 @@ def actividades_create():
         form.asignatura_id.choices = [(0, 'Error al cargar asignaturas')]
     
     if form.validate_on_submit():
-        # Obtener la información completa de la materia seleccionada
-        materia_id = form.asignatura_id.data
+        # Obtener la información completa de la materia seleccionada (opcional)
+        materia_id = form.asignatura_id.data if form.asignatura_id.data else None
         materia_info = None
-        materia_nombre = "Desconocida"
-        
-        if materia_id > 0:
+        materia_nombre = None
+        if materia_id and materia_id > 0:
             try:
                 materia = materia_service.get_materia_by_id(materia_id)
                 if materia:
@@ -218,7 +217,7 @@ def actividades_create():
         actividad = Actividad(
             tipo_actividad_id=form.tipo_actividad_id.data,
             espacio_id=form.espacio_id.data,
-            dias=','.join(form.dias.data),  # Convertir lista en string separado por comas
+            dias=','.join(form.dias.data),
             frecuencia=form.frecuencia.data,
             fecha_desde=form.fecha_desde.data,
             fecha_hasta=form.fecha_hasta.data,
@@ -226,7 +225,7 @@ def actividades_create():
             horario_hasta=form.horario_hasta.data,
             equipamiento_extra=form.equipamiento_extra.data,
             asignatura=materia_nombre,
-            asignatura_id=materia_id if materia_id > 0 else None,
+            asignatura_id=materia_id if materia_id and materia_id > 0 else None,
             asignatura_info=materia_info
         )
         db.session.add(actividad)
@@ -278,12 +277,11 @@ def actividades_edit(id):
             form.asignatura_id.data = actividad.asignatura_id
     
     if form.validate_on_submit():
-        # Obtener la información completa de la materia seleccionada
-        materia_id = form.asignatura_id.data
+        # Obtener la información completa de la materia seleccionada (opcional)
+        materia_id = form.asignatura_id.data if form.asignatura_id.data else None
         materia_info = None
         materia_nombre = actividad.asignatura  # Valor predeterminado
-        
-        if materia_id > 0:
+        if materia_id and materia_id > 0:
             try:
                 materia = materia_service.get_materia_by_id(materia_id)
                 if materia:
@@ -302,10 +300,11 @@ def actividades_edit(id):
         actividad.horario_hasta = form.horario_hasta.data
         actividad.equipamiento_extra = form.equipamiento_extra.data
         actividad.asignatura = materia_nombre
-        actividad.asignatura_id = materia_id if materia_id > 0 else None
+        actividad.asignatura_id = materia_id if materia_id and materia_id > 0 else None
         if materia_info:
             actividad.asignatura_info = materia_info
-        
+        else:
+            actividad.asignatura_info = None
         db.session.commit()
         flash('Actividad actualizada exitosamente.')
         return redirect(url_for('admin.actividades_list'))

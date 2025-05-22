@@ -15,9 +15,9 @@ class Actividad(db.Model):
     horario_desde = db.Column(db.Time, nullable=False)
     horario_hasta = db.Column(db.Time, nullable=False)
     equipamiento_extra = db.Column(db.Text)
-    asignatura = db.Column(db.String(100), nullable=False)
-    asignatura_id = db.Column(db.Integer)
-    asignatura_info = db.Column(db.Text) # Almacena la información completa de la asignatura en formato JSON
+    asignatura = db.Column(db.String(100), nullable=True)  # Nombre de la asignatura (opcional)
+    asignatura_id = db.Column(db.Integer, nullable=True)
+    asignatura_info = db.Column(db.Text, nullable=True) # Almacena la información completa de la asignatura en formato JSON (opcional)
     fecha_creacion = db.Column(db.DateTime, default=datetime.utcnow)
       # Relaciones
     tipo_actividad = db.relationship('TipoActividad')

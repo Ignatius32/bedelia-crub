@@ -30,12 +30,17 @@
                     
                     <div class="mb-3">
                         {{ form.asignatura_id.label(class="form-label") }}
-                        {{ form.asignatura_id(class="form-control asignatura-select" + (" is-invalid" if form.asignatura_id.errors else "")) }}
+                        <div class="input-group">
+                            {{ form.asignatura_id(class="form-control asignatura-select" + (" is-invalid" if form.asignatura_id.errors else "")) }}
+                            <button type="button" class="btn btn-outline-secondary" id="clear-asignatura" title="Quitar asignatura">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
                         {{ form.asignatura_info() }}
                         {% for error in form.asignatura_id.errors %}
                             <div class="invalid-feedback">{{ error }}</div>
                         {% endfor %}
-                        <small class="form-text text-muted">Busque por nombre de la materia o carrera.</small>
+                        <small class="form-text text-muted">Busque por nombre de la materia o carrera. Puede quitar la asignatura seleccionada con el botón (X).</small>
                     </div>
                     
                     <div class="row">
@@ -172,6 +177,18 @@
             time_24hr: true,
             allowInput: true
         });
+        // Botón para limpiar la asignatura seleccionada
+        const clearBtn = document.getElementById('clear-asignatura');
+        const asignaturaSelect = document.getElementById('asignatura_id');
+        if (clearBtn && asignaturaSelect) {
+            clearBtn.addEventListener('click', function() {
+                if (window.jQuery && $(asignaturaSelect).data('select2')) {
+                    $(asignaturaSelect).val(null).trigger('change');
+                } else {
+                    asignaturaSelect.value = '';
+                }
+            });
+        }
           // Validación del formulario
         const form = document.getElementById('actividad-form');
         form.addEventListener('submit', function(e) {

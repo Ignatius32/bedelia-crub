@@ -55,7 +55,7 @@ class ActividadForm(FlaskForm):
     horario_desde = TimeField('Horario Desde', validators=[DataRequired()])
     horario_hasta = TimeField('Horario Hasta', validators=[DataRequired()])
     equipamiento_extra = TextAreaField('Equipamiento Extra', validators=[Optional()])
-    asignatura_id = SelectField('Asignatura', coerce=int, validators=[DataRequired()])
+    asignatura_id = SelectField('Asignatura', coerce=int, validators=[Optional()])
     asignatura_info = HiddenField('Información de la Asignatura')  # Campo oculto para almacenar la información completa
     submit = SubmitField('Guardar')
     
